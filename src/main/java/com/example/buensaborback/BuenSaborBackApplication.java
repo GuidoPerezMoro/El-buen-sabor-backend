@@ -273,10 +273,6 @@ public class BuenSaborBackApplication {
 			domicilioRepository.save(domicilioCliente1);
 			domicilioRepository.save(domicilioCliente2);
 
-			// agregar factura
-			Factura factura = Factura.builder().fechaFacturacion(LocalDate.of(2024, 2, 13)).formaPago(FormaPago.MercadoPago).mpMerchantOrderId(1).mpPaymentId(1).mpPaymentType("mercado pago").mpPreferenceId("0001").totalVenta(2500d).build();
-			facturaRepository.save(factura);
-
 			// agregar detalle pedido
 			DetallePedido detallePedido1 = DetallePedido.builder().articulo(pizzaMuzarella).cantidad(1).subTotal(130d).build();
 			DetallePedido detallePedido2 = DetallePedido.builder().articulo(cocaCola).cantidad(1).subTotal(70d).build();
@@ -285,7 +281,6 @@ public class BuenSaborBackApplication {
 			Pedido pedido = Pedido.builder()
 					.domicilio(domicilioCliente1)
 					.estado(Estado.Entregado)
-					.factura(factura)
 					.formaPago(FormaPago.MercadoPago)
 					.fechaPedido(LocalDate.of(2024, 4, 18))
 					.horaEstimadaFinalizacion(LocalTime.of(12, 30))
@@ -299,13 +294,16 @@ public class BuenSaborBackApplication {
 			pedido.getDetallePedidos().add(detallePedido2);
 			pedidoRepository.save(pedido);
 
+			// agregar factura
+			Factura factura = Factura.builder().fechaFacturacion(LocalDate.of(2024, 2, 13)).formaPago(FormaPago.MercadoPago).mpMerchantOrderId(1).mpPaymentId(1).mpPaymentType("mercado pago").mpPreferenceId("0001").totalVenta(2500d).pedido(pedido).build();
+			facturaRepository.save(factura);
+
 			// agregar cliente
 			Cliente cliente1 = Cliente.builder().nombre("Alejandro").email("alex@gmail.com").apellido("Lencinas").imagen(imagenUsuario).telefono("2634666666").usuario(usuario1).fechaNacimiento(LocalDate.of(1990, 12, 15)).build();
 			cliente1.getDomicilios().add(domicilioCliente1);
 			cliente1.getDomicilios().add(domicilioCliente2);
 			cliente1.getPedidos().add(pedido);
 			clienteRepository.save(cliente1);
-
 		};
 	}
 }

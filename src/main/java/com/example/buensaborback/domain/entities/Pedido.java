@@ -35,7 +35,7 @@ public class Pedido extends Base{
     @ManyToOne
     private Sucursal sucursal;
 
-    @OneToOne
+    @OneToOne(mappedBy = "pedido")
     private Factura factura;
 
 
